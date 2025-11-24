@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>BookMyMovie - Movie Ticket Booking</title>
+  <th:block th:insert="~{/fragments/head.html}" />
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body>
+  <th:block th:insert="~{/fragments/navbar.html}" />
+
+  <th:block th:insert="~{/fragments/message.html}" />
+  
+  <main>
+    <header class="hero-section">
+      <div class="container">
+        <h1 class="hero-title">Welcome to BookMyMovie</h1>
+        <p class="hero-subtitle">Book your movie tickets with ease</p>
+        <a href="/movies" class="btn btn-primary btn-lg">Book Now</a>
+      </div>
+    </header>
+
+    <section class="featured-movies">
+      <div class="container">
+        <h2 class="text-center mb-4" th:if="${!movies.isEmpty()}">
+          Featured Movies
+        </h2>
+
+        <div id="movieCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div th:each="movie, iterStat : ${movies}"
+              th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
+              <img th:src="${movie.movie_poster}" class="d-block w-100" th:alt="${movie.name}" />
+              <div class="carousel-caption d-none d-md-block">
+                <h5 class="movie-title" th:text="${movie.name}"></h5>
+                <p th:text="${movie.description}"></p>
+              </div>
+            </div>
+          </div>
+
+          <button class="carousel-control-prev" type="button" data-bs-target="#movieCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#movieCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <th:block th:insert="~{/fragments/footer.html}" />
+
+ <script src="/js/alert.js"></script>
+</body>
+
+</html>
