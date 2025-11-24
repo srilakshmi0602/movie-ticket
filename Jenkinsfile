@@ -51,14 +51,14 @@ pipeline {
         }
 
         stage("Start Application") {
-            steps {
-                echo "Starting application on EC2..."
-                sh """
-                    ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem ubuntu@65.1.73.32 \
-                    'nohup java -jar movie-ticket.jar > app.log 2>&1 &'
-                """
-            }
-        }
+    steps {
+        echo "Starting application on EC2..."
+        sh """
+            ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem ubuntu@65.1.73.32 \
+            'nohup java -jar /home/ubuntu/movie-ticket.jar > /home/ubuntu/app.log 2>&1 &'
+        """
+    }
+}
 
         stage("Done") {
             steps {
