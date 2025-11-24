@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     stages {
-
         stage('Clone Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/srilakshmi0602/movie-ticket.git'
@@ -17,32 +16,28 @@ pipeline {
 
         stage('Stop Existing App') {
             steps {
-                sh '''
-                ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem ubuntu@65.1.73.32 "pkill -f movie-ticket || true"
-                '''
+                sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem ubuntu@65.1.73.32 'pkill -f movie-ticket || true'"
             }
         }
 
         stage('Copy JAR') {
             steps {
-                sh '''
-                scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem target/*.jar ubuntu@65.1.73.32:/home/ubuntu/movie-ticket.jar
-                '''
+                sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem target/*.jar ubuntu@65.1.73.32:/home/ubuntu/movie-ticket.jar"
             }
         }
 
         stage('Start App') {
             steps {
-                sh '''
-                ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem ubuntu@65.1.73.32 "nohup java -jar movie-ticket.jar > app.log 2>&1 &"
-                '''
+                sh """
+                    ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem ubuntu@65.1.73.32 "nohup java -jar movie-ticket.jar > app.log 2>&1 &"
+                """
             }
         }
     }
 
     post {
         success {
-            echo "🚀 Deployment Successful! Application is now running on port 8080"
+            echo "🚀 Deployment Successful! Application running on port 8080"
         }
         failure {
             echo "❌ Deployment Failed — Check SSH connection, key, and IP address."
