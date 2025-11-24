@@ -34,10 +34,11 @@ pipeline {
         echo "Stopping currently running application on EC2..."
         sh """
             ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/sri_jsp.pem ubuntu@65.1.73.32 \
-            'pkill -f movie-ticket || echo "App not running"'
+            'pkill -f movie-ticket || echo "App not running"; exit 0'
         """
     }
 }
+
 
 
         stage("Copy JAR to EC2") {
